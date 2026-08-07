@@ -91,7 +91,10 @@ def health():
 
 @app.route("/setup", methods=["GET"])
 def setup():
-    r = tg("setWebhook", url=request.url_root.rstrip("/"))
+    url = request.url_root.rstrip("/")
+    if url.startswith("http://"):
+        url = "https://" + url[7:]
+    r = tg("setWebhook", url=url)
     return f"Webhook: {r}"
 
 @app.route("/", methods=["POST"])
